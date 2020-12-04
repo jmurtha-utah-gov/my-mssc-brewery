@@ -1,7 +1,9 @@
-package guru.springframework.mymsscbrewery.web.controller;
+package guru.springframework.mymsscbrewery.web.controller.v2;
 
 import guru.springframework.mymsscbrewery.web.model.BeerDto;
+import guru.springframework.mymsscbrewery.web.model.v2.BeerDtoV2;
 import guru.springframework.mymsscbrewery.web.service.BeerService;
+import guru.springframework.mymsscbrewery.web.service.v2.BeerServiceV2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@RequestMapping("/api/v1/beer")
+@RequestMapping("/api/v2/beer")
 @RestController
-public class BeerController {
+public class BeerControllerV2 {
 
     @Autowired
-    private BeerService beerService;
+    private BeerServiceV2 beerService;
 
 //    private final BeerService beerService;
 //    public BeerController(BeerService beerService) {
@@ -23,14 +25,14 @@ public class BeerController {
 //    }
 
     @GetMapping({"/{beerId}"})
-    public ResponseEntity<BeerDto> getBeer(@PathVariable UUID beerId) {
+    public ResponseEntity<BeerDtoV2> getBeer(@PathVariable UUID beerId) {
         return new ResponseEntity<>(beerService.getBeerById(beerId), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity handlePost(@RequestBody BeerDto beerDta) {
+    public ResponseEntity handlePost(@RequestBody BeerDtoV2 beerDta) {
 
-        BeerDto savedDto = beerService.saveNewBeer(beerDta);
+        BeerDtoV2 savedDto = beerService.saveNewBeer(beerDta);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer" + savedDto.getId().toString());
@@ -39,7 +41,7 @@ public class BeerController {
     }
 
     @PutMapping({"/{beerId}"})
-    public ResponseEntity handleUpdate(@PathVariable("beerId") UUID beerId, @RequestBody BeerDto beerDto) {
+    public ResponseEntity handleUpdate(@PathVariable("beerId") UUID beerId, @RequestBody BeerDtoV2 beerDto) {
         beerService.updateBeet(beerId, beerDto);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
